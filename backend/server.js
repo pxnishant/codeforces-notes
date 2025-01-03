@@ -11,13 +11,36 @@ mongoose.connect(process.env.MONGODB_CONN_URL).then(() => {
 
 app.use(express.json())
 
-app.get('/api/getNotes', async (req, res) => {
+app.get('/api/getAllNotes', async (req, res) => {
 
     try {
-        const user = await User.findOne( {username: req.body.username} )
+        const user = await User.findOne( { username: req.body.username } )
         
         if (user) {
             res.send(user.questions)
+        }
+        else {
+            res.send(`[]`)
+        }
+    }
+
+    catch(e) {
+        console.log("Could not fetch notes / GET failed: ", e)
+        res.status(500).end()
+    }
+
+
+})
+
+
+app.get('/api/getNotes', async (req, res) => {
+
+    try {
+        const user = await User.findOne( { username: req.body.username } )
+        if (user) {
+            const startIndex = Math.max(0, req.body.questionNumber - 1)
+            const endIndex = Math.min(startIndex + req.body.count - 1, user.questions.length - 1)
+            //if startIndex exceeds the last index, it returns an empty array
         }
         else {
             res.send(`[]`)
