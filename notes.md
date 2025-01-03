@@ -1,7 +1,7 @@
 ## Database:
 
 {
-    
+
     username: String,
     questions: [{
         name: String,
@@ -37,6 +37,20 @@
 }
 
 
+# PUT (/api/putNote)
 
-PUT => changeNote (username, q, newtext)
-DELTE => deleteNote (username, q)
+- request.body should be a JSON of the form:
+
+{
+    username: String,
+    questionNumber: Number,
+    note: String
+}
+
+# DELETE (/api/deleteNote)
+
+{
+    username: String,
+    questionNumber: Number
+
+}
