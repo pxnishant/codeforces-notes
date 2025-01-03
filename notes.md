@@ -14,12 +14,23 @@
 
 ## APIs
 
+# GET (/api/getAllNotes)
+- returns an array of all notes
+- request.body should be of the form:
+{
+    username: String
+}
+
+
 # GET (/api/getNotes)
+- returns "count" number of notes starting at "questionNumber" (included)
+- startIndex = questionNumber -1
+- endIndex = startIndex + count - 1
 - request.body should be of the form:
 {
     username: String,
-    questionNumber: Number,
-    Length: Number
+    questionNumber: Number (1-indexed),
+    count: Number
 }
 
 
