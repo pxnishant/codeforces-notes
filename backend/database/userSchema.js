@@ -1,14 +1,17 @@
 const mongoose = require('mongoose')
 
+const questionSchema = new mongoose.Schema({
+    name: String,
+    link: String,
+    rating: Number,
+    note: String,
+    _id: false
+})
+
 const userSchema = new mongoose.Schema({
 
     username: String,
-    questions: [{
-        name: String,
-        link: String,
-        rating: Number,
-        note: String
-    }]
+    questions: [questionSchema]
 
 
 })
