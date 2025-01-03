@@ -9,25 +9,29 @@ mongoose.connect(process.env.MONGODB_CONN_URL).then(() => {
     console.log("successfully connected to mongodb")
 })
 
-const user1 = new User({
-
-    username: 'nishant',
-    questions: [{
-        name: 'qa',
-        link: 'https://cf.com/qa',
-        rating: 1900,
-        note: 'test run'
-    }]
-
-})
-
-user1.save().then(() => {
-    console.log('user1 saved')
-})
+app.use(express.json())
 
 
-app.get('/api/getNotes', (req, res) => {
+app.post('/api/addNote', (req, res) => {
     
+    const newQuestion = {
+        name: req.body.questionName,
+        link: req.body.questionURL,
+        rating: req.body.questionRating,
+        note: req.body.note
+    }
+
+    User.updateOne(
+        { username: req.body.username },
+        { $push : { questions: newQuestion } }, 
+        { upsert: true }
+    ).then(() => {
+        console.log("Note added successfully")
+        res.send('PUT request successful')
+    }).catch((e) => {
+        console.log("Couldn't add note: ", e)
+        res.status(204).end()
+    })
 
 })
 
