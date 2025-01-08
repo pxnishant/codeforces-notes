@@ -3,18 +3,10 @@
     "name": "Codeforces Notes",
     "version": "1.0",
     "description": "Take notes on Codeforces questions",
-  
-    "icons": {
-      "16": "-",
-      "32": "-",
-      "48": "-",
-      "128": "-"
-    },
     "content_scripts": [
       {
-        "js": ["-"],
-        "matches": [
-        ]
+        "matches":["https://codeforces.com/*/problem*"],
+        "js":["problem.js"]
       }
     ]
   }
