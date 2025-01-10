@@ -13,21 +13,32 @@ module.exports = async (req, res) => {
     console.log("Token received: ", token)
 
     if (!token) {
-        return res.status(404).end('Token is missing' );
+        return res.redirect(`chrome-extension://${process.env.EXTENSION_ID}/authRedirect.html?status=failed`)
     }
 
     try {
-        const dbToken = await Auth.findOne( { token: token } )
-        if (!dbToken) {
-            return res.status(404).end('Token expired or already used.');   
-        }
 
-        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+
             if (err) {
-                return res.status(404).end('Token is invalid or expired.');
+                return res.redirect(`chrome-extension://${process.env.EXTENSION_ID}/authRedirect.html?status=failed`)
             }
-            return res.json({ email: dbToken.email });
+        
+            const userInDB = await Auth.findOne( { email: decoded.email } )
+    
+            if (!userInDB) {
+                return res.redirect(`chrome-extension://${process.env.EXTENSION_ID}/authRedirect.html?status=failed`)
+            }
+    
+            if (userInDB.token != token) {
+                return res.redirect(`chrome-extension://${process.env.EXTENSION_ID}/authRedirect.html?status=failed`)   
+            }
+
+            const authToken = jwt.sign( { email: decoded.email }, process.env.JWT_SECRET )
+
+            return res.redirect(`chrome-extension://${process.env.EXTENSION_ID}/authRedirect.html?status=success&authToken=${authToken}`)
         });
+        
     }
     
     catch (error) {
