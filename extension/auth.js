@@ -9,7 +9,7 @@ function checkCookie() {
         if(cookie){
             statusDiv.textContent = "You're logged in!";
             loginScreen.style.display = "none";
-            logoutScreen.style.display = "block";
+            logoutScreen.style.display = "flex";
         } else {
             statusDiv.textContent = "Enter your email to login!";
             loginScreen.style.display = "block";
@@ -33,7 +33,7 @@ loginButton.addEventListener('click', () => {
     })
         .then((res) => {
             if(!res.ok){
-                return "error";
+                throw new Error("Bad Request!");
             }
         })
         .then((data) => {
@@ -53,7 +53,10 @@ loginButton.addEventListener('click', () => {
 logoutButton.addEventListener('click', () => {
     chrome.cookies.remove({url: backendUrl, name: cookieName}, (cookie) => {
         console.log(`removed cookie, ${cookie}`);
-    })
+    });
+    logoutScreen.style.display = "none";
+    statusDiv.textContent = "Enter you email to login!";
+    loginScreen.style.display = "block";
 })
 
 document.addEventListener('DOMContentLoaded', checkCookie);
