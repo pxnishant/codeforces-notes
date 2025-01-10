@@ -4,8 +4,10 @@
     "version": "1.0",
     "description": "Take notes on Codeforces questions",
     "permissions": [
-      "identity",
-      "storage"
+      "cookies"
+    ],
+    "host_permissions": [
+      "http://localhost:3001/"
     ],
     "content_scripts": [
       {

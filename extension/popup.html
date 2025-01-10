@@ -6,11 +6,19 @@
   
 </head>
 <body>
-  <form>
-    <label for = "emailInput">Email:</label>
-    <input type = "text" id = "emailInput"></input>
-    <button id = "submit">Get Auth Token</button>
-  </form>
+  <div class="body">
+    <div class="status"></div>
+    <div class="loginScreen" style = "display: none;">
+      
+        <label for="email">Email:</label>
+        <input type="text", id="email" />
+        <button id="login">Get Auth token.</button>
+
+    </div>
+    <div class="logoutScreen" style = "display: none;">
+      <button id="logout">Logout</button>
+    </div>
+  </div>
 
   <script src="auth.js"></script>
 </body>
