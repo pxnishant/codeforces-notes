@@ -6,6 +6,6 @@ const verifyToken = require('../controllers/verifyToken.js')
 
 //routes
 router.post('/getMagicLink', genMagicLink)
-router.get('/verify/:token', verifyToken)
+router.get('/verify', verifyToken)
 
 module.exports = router

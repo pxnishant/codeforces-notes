@@ -6,16 +6,16 @@
   
 </head>
 <body>
-  <div class="body">
-    <div class="status"></div>
-    <div class="loginScreen" style = "display: none;">
+  <div class="body" style="width: 250px; height: 100px; display: flex; flex-direction: column; align-content: center; padding: 10px; gap: 20px;">
+    <div class="status" style="font-size: 1.2rem;"></div>
+    <div class="loginScreen" style = "display: none; flex-grow: 2;">
       
         <label for="email">Email:</label>
         <input type="text", id="email" />
-        <button id="login">Get Auth token.</button>
+        <button id="login" style="margin-top: 10px;">Get Auth token.</button>
 
     </div>
-    <div class="logoutScreen" style = "display: none;">
+    <div class="logoutScreen" style = "display: none; flex-grow: 2;">
       <button id="logout">Logout</button>
     </div>
   </div>

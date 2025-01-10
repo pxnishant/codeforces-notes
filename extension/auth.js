@@ -51,7 +51,7 @@ loginButton.addEventListener('click', () => {
 });
 
 logoutButton.addEventListener('click', () => {
-    chrome.cookies.clear({url: backendUrl, name: cookieName}, (cookie) => {
+    chrome.cookies.remove({url: backendUrl, name: cookieName}, (cookie) => {
         console.log(`removed cookie, ${cookie}`);
     })
 })

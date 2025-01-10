@@ -10,11 +10,11 @@ module.exports = async (req, res) => {
     //if yes, do jwt.verify
     //redirect wherever if verified
 
-    const {token} = req.params
+    const token = req.query.token
     console.log("Token received: ", token)
 
     if (!token) {
-        return res.redirect(`No Token recieved.`)
+        return res.send(`No Token recieved.`)
     }
 
     try {
@@ -22,17 +22,17 @@ module.exports = async (req, res) => {
         jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
 
             if (err) {
-                return res.redirect(`${err}`)
+                return res.send(`${err}`)
             }
         
             const userInDB = await Auth.findOne( { email: decoded.email } )
     
             if (!userInDB) {
-                return res.redirect(`Invalid Token`);
+                return res.send(`Invalid Token`);
             }
     
             if (userInDB.token != token) {
-                return res.redirect(`Token Expired.`);
+                return res.send(`Token Expired.`);
             }
 
             const authToken = jwt.sign( { email: decoded.email }, process.env.JWT_SECRET, { expiresIn: '30d' });
@@ -44,7 +44,7 @@ module.exports = async (req, res) => {
             });
 
 
-            return res.redirect(`Logged in Successfully!`);
+            return res.send(`Logged in Successfully!`);
         });
         
     }
