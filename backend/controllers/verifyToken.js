@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const Auth = require('../database/authSchema')
-const mongoose = require('mongoose')
+
+
 require('dotenv').config()
 
 module.exports = async (req, res) => {
@@ -9,11 +10,11 @@ module.exports = async (req, res) => {
     //if yes, do jwt.verify
     //redirect wherever if verified
 
-    const token = req.query.token
+    const {token} = req.params
     console.log("Token received: ", token)
 
     if (!token) {
-        return res.redirect(`chrome-extension://${process.env.EXTENSION_ID}/authRedirect.html?status=failed`)
+        return res.redirect(`No Token recieved.`)
     }
 
     try {
@@ -21,22 +22,29 @@ module.exports = async (req, res) => {
         jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
 
             if (err) {
-                return res.redirect(`chrome-extension://${process.env.EXTENSION_ID}/authRedirect.html?status=failed`)
+                return res.redirect(`${err}`)
             }
         
             const userInDB = await Auth.findOne( { email: decoded.email } )
     
             if (!userInDB) {
-                return res.redirect(`chrome-extension://${process.env.EXTENSION_ID}/authRedirect.html?status=failed`)
+                return res.redirect(`Invalid Token`);
             }
     
             if (userInDB.token != token) {
-                return res.redirect(`chrome-extension://${process.env.EXTENSION_ID}/authRedirect.html?status=failed`)   
+                return res.redirect(`Token Expired.`);
             }
 
-            const authToken = jwt.sign( { email: decoded.email }, process.env.JWT_SECRET )
+            const authToken = jwt.sign( { email: decoded.email }, process.env.JWT_SECRET, { expiresIn: '30d' });
 
-            return res.redirect(`chrome-extension://${process.env.EXTENSION_ID}/authRedirect.html?status=success&authToken=${authToken}`)
+            res.cookie('auth', authToken, {
+                httpOnly: true,
+                secure: false,
+                maxAge: 30 * 24 * 60 * 60 * 1000
+            });
+
+
+            return res.redirect(`Logged in Successfully!`);
         });
         
     }

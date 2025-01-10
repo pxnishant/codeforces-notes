@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose')
 const authRoutes = require('./routers/authRoutes')
 const notesRoutes = require('./routers/notesRoutes')
@@ -13,6 +14,8 @@ mongoose.connect(process.env.MONGODB_CONN_URL).then(() => {
 
 //middlewares
 app.use(express.json())
+app.use(cookieParser());
+
 
 //routes
 app.use('/api/auth', authRoutes)
