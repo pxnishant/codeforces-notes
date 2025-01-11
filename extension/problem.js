@@ -134,3 +134,43 @@ if(navBar){
 } else {
     console.error("second-level-menu-list not found.");
 }
+
+function extractIdsFromUrl(url) {
+    let regexProblemset = /https:\/\/codeforces\.com\/problemset\/problem\/([^\/]+)\/([^\/]+)/;
+    let regexGym = /https:\/\/codeforces\.com\/gym\/([^\/]+)\/problem\/([^\/]+)/;
+    let regexGroup = /https:\/\/codeforces\.com\/group\/([^\/]+)\/contest\/([^\/]+)\/problem\/([^\/]+)/;
+    let regexContest = /https:\/\/codeforces\.com\/contest\/([^\/]+)\/problem\/([^\/]+)/;
+
+    let matchesProblemset = url.match(regexProblemset);
+    let matchesGym = url.match(regexGym);
+    let matchesGroup = url.match(regexGroup);
+    let matchesContest = url.match(regexContest);
+
+    if (matchesProblemset) {
+        return { groupId: -1, contestId: matchesProblemset[1], problemId: matchesProblemset[2] };
+    } else if (matchesGym) {
+        return { groupId: -1, contestId: matchesGym[1], problemId: matchesGym[2] };
+    } else if (matchesGroup) {
+        return { groupId: matchesGroup[1], contestId: matchesGroup[2], problemId: matchesGroup[3] };
+    } else if (matchesContest) {
+        return { groupId: -1, contestId: matchesContest[1], problemId: matchesContest[2] };
+    } else {
+        return null;
+    }
+}
+
+function fetchNote(url) {
+    let ids = extractIdsFromUrl(url);
+    ids.pType = "normal";
+    if(url.includes('/gym/')) {
+        ids.pType = "gym";
+    }
+    ids.type = "getNote";
+    chrome.runtime.sendMessage(ids, (res) => {
+        return res;
+    });
+}
+
+let currentUrl = window.location.href;
+
+const currNote = fetchNote(currentUrl);

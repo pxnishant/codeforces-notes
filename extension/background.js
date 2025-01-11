@@ -13,6 +13,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResp) => {
                 if(cookie) sendResp(true);
                 else sendResp(false);
             })
+        } else if(message.type === "getNote") {
+            let url = backendUrl + `api/getNote/${message.pType}/${message.contestId}/${message.problemId}/group/${message.groupId}`;
+            
+            fetch(url)
+            .then(res => console.log(res))
+            .then(data => {
+                console.log(`NOTE: ${data}`);
+                sendResp(data);
+            })
+            .catch(e => {
+                console.error("Error saving notes:", error);
+            });
         }
         return true;
     }
