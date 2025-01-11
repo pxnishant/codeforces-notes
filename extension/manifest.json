@@ -13,6 +13,11 @@
       {
         "matches":["https://codeforces.com/*/problem*"],
         "js":["problem.js"]
+      },
+      {
+        "matches":["https://codeforces.com/profile*"],
+        "js":["profile.js"],
+        "css" : ["profile.css"]
       }
     ],
     "action": {
