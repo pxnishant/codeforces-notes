@@ -10,15 +10,12 @@ const editNote = require('../controllers/editNote')
 const deleteNote = require('../controllers/deleteNote')
 const getNote = require('../controllers/getNote');
 
-router.use(authMiddleware);
-router.use(generateProblemLink);
-
 //routes
-router.get('/getAllNotes', getAllNotes)
-router.get('/getNotes', getNotes)
-router.get('/getNote/:type/:contestId/:problemId/group/:groupId', getNote);
-router.post('/addNote', addNote)
-router.put('/editNote', editNote)
-router.delete('/deleteNote', deleteNote)
+router.get('/getAllNotes', authMiddleware, generateProblemLink, getAllNotes)
+router.get('/getNotes', authMiddleware, generateProblemLink, getNotes)
+router.get('/getNote/:type/:contestId/:problemId/group/:groupId', authMiddleware, generateProblemLink, getNote);
+router.post('/addNote', authMiddleware, generateProblemLink, addNote)
+router.put('/editNote', authMiddleware, generateProblemLink, editNote)
+router.delete('/deleteNote', authMiddleware, generateProblemLink, deleteNote)
 
 module.exports = router
