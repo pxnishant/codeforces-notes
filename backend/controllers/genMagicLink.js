@@ -3,7 +3,7 @@ const Auth = require('../database/authSchema')
 const mongoose = require('mongoose')
 const { Resend } = require('resend')
 require('dotenv').config()
-const backendURL = process.env.STATUS == 'production' ? VERCEL_PROJECT_PRODUCTION_URL : process.env.HOST
+const backendURL = process.env.STATUS == 'production' ? process.env.VERCEL_PROJECT_PRODUCTION_URL : process.env.HOST
 
 module.exports = async (req, res) => {
 
