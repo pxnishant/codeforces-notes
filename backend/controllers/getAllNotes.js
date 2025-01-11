@@ -4,7 +4,7 @@ require('dotenv').config()
 module.exports = async (req, res) => {
 
     try {
-        const user = await User.findOne( { username: req.body.username } )
+        const user = await User.findOne( { email: req.email } )
         
         if (user) {
             res.send(user.questions)

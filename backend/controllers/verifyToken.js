@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
     console.log("Token received: ", token)
 
     if (!token) {
-        return res.send(`No Token recieved.`)
+        return res.status(401).send(`No Token recieved.`)
     }
 
     try {
@@ -22,17 +22,17 @@ module.exports = async (req, res) => {
         jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
 
             if (err) {
-                return res.send(`${err}`)
+                return res.status(403).send(`${err}`)
             }
         
             const userInDB = await Auth.findOne( { email: decoded.email } )
     
             if (!userInDB) {
-                return res.send(`Invalid Token`);
+                return res.status(404).send(`User not found.`);
             }
     
             if (userInDB.token != token) {
-                return res.send(`Token Expired.`);
+                return res.status(403).send(`Token Expired.`);
             }
 
             const authToken = jwt.sign( { email: decoded.email }, process.env.JWT_SECRET, { expiresIn: '30d' });

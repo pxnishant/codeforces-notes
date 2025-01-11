@@ -1,7 +1,7 @@
 const statusDiv = document.getElementsByClassName("status")[0];
 const loginScreen = document.getElementsByClassName("loginScreen")[0];
 const logoutScreen = document.getElementsByClassName("logoutScreen")[0];
-const backendUrl = "http://localhost:3001/";
+const backendUrl = "https://codeforces-notes.vercel.app/";
 const cookieName = "auth";
 
 function checkCookie() {
@@ -22,18 +22,15 @@ const loginButton = document.getElementById("login");
 const logoutButton = document.getElementById("logout");
 
 loginButton.addEventListener('click', () => {
-    const magicLink = backendUrl + "api/auth/getMagicLink";
-    const email = document.getElementById("email").value
+    const email = document.getElementById("email").value;
+    const magicLink = backendUrl + `api/auth/getMagicLink/${email}`;
     fetch(magicLink, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email: email })
+        method: "GET",
     })
         .then((res) => {
             if(!res.ok){
-                throw new Error("Bad Request!");
+                console.log(res);
+                throw new Error("Try again after some time!");
             }
         })
         .then((data) => {

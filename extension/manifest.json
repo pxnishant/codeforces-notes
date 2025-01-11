@@ -7,7 +7,7 @@
       "cookies"
     ],
     "host_permissions": [
-      "http://localhost:3001/"
+      "https://codeforces-notes.vercel.app/"
     ],
     "content_scripts": [
       {
@@ -15,8 +15,10 @@
         "js":["problem.js"]
       }
     ],
+    "background": {
+      "service_worker": "background.js"
+    },
     "action": {
       "default_popup": "popup.html"
-    },
-    "key" : "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApEwoiWOV5tlQ4MVvAMc/shruiEZ6wY3/jH9i28nAQMOBjv8TokS5BTK5K71g+tV1WRl09mM9yw/5Av0heuy4S3nwxn3QQAtFbhDUythiGz2sHUd0T1ByMJ4b/+NFUzC9VSufnv6fGHsgLH106ZvJTsFyj6/ZaUd9/vfU50x7vA0uviE2DCrHy48lWNJyTYhBKq/26i4yOmopwPQnoCiHGDhynopeu5r9Hi/dhgi+wc0E14LYhKvC13grJ2b8SFds/IFF2s9jTqqmWDsLtnj05Ue24lzh4rMHlh/8B/Z0iJe6GHtq3QQo46XiQDggPzrg8BRja4CRumhRoj/oMubKlwIDAQAB"
-  }
+    }
+}

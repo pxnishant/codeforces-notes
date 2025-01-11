@@ -1,10 +1,9 @@
 const User = require('../database/userSchema')
 
 module.exports = async (req, res) => {
-
     
     try {
-        const user = await User.findOne( { username: req.body.username } )
+        const user = await User.findOne( { email: req.email } )
 
         if (user) {
             
