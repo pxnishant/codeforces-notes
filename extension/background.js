@@ -8,7 +8,7 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.runtime.onMessage.addListener((message, sender, sendResp) => {
     // Message is from content Script
     if(sender.tab){
-        if(message.type === "isLoggedIn?"){
+        if(message.type === "isLoggedIn"){
             chrome.cookies.get({url: backendUrl, name: cookieName}, (cookie) => {
                 if(cookie) sendResp(true);
                 else sendResp(false);

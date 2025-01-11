@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
         groupId = req.body.groupId || -1;
         contestId = req.body.contestId;
         problemId = req.body.problemId;
-        type = req.body.type;
+        type = req.body.type || " ";
     }
     
     const baseURL = "https://codeforces.com/";

@@ -4,8 +4,7 @@
     "version": "1.0",
     "description": "Take notes on Codeforces questions",
     "permissions": [
-      "cookies",
-      "contextMenus"
+      "cookies"
     ],
     "host_permissions": [
       "https://codeforces-notes.vercel.app/"
@@ -14,11 +13,6 @@
       {
         "matches":["https://codeforces.com/*/problem*"],
         "js":["problem.js"]
-      },
-      {
-        "matches":["https://codeforces.com/profile*"],
-        "js":["profile.js"],
-        "css" : ["profile.css"]
       }
     ],
     "background": {
