@@ -1,15 +1,17 @@
 module.exports = (req, res, next) => {
     if(req.type == 'PUT') next();
-    if(req.params){
-        const groupId = max(req.params.groupId, -1);
-        const contestId = req.params.contestId;
-        const problemId = req.params.problemId;
-        const type = req.params.type;
+    let groupId, contestId, problemId, type;
+    if(req.type == 'GET'){
+        console.log("food")
+        groupId = Math.max(req.params.groupId, -1);
+        contestId = req.params.contestId;
+        problemId = req.params.problemId;
+        type = req.params.type;
     } else {
-        const groupId = req.body.groupId ? req.body.groupId : -1;
-        const contestId = req.body.contestId;
-        const problemId = req.body.problemId;
-        const type = req.body.type;
+        groupId = req.body.groupId || -1;
+        contestId = req.body.contestId;
+        problemId = req.body.problemId;
+        type = req.body.type;
     }
     
     const baseURL = "https://codeforces.com/";

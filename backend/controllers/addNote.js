@@ -9,15 +9,15 @@ module.exports = async (req, res) => {
 
     try{
         await User.updateOne(
-            {username: req.username},
+            {email: req.email},
             {$push: {questions: newQuestion}},
             {upsert: true}
         )
         
-        console.log(`note for user ${req.user} is updated.`);
+        console.log(`note for user ${req.email} is updated.`);
         res.send("Note Added Successfully!");
     } catch(e) {
-        console.error(`Note not added for user ${req.username}`);
+        console.error(`Note not added for user ${req.email}`);
         res.status(500).end();
     }
 }

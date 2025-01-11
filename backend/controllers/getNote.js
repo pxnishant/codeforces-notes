@@ -4,7 +4,7 @@ module.exports = async (req, res) => {
     try {
         const user = await User.findOne(
             {
-                username: req.username,
+                email: req.email,
                 'questions.link': req.problemLink,
             },
             { 'questions.$': 1}

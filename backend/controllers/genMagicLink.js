@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
     //save token in db, along with exp time
     //email this link
     
-    const email = req.body.email
+    const email = req.params.email
     const secret = process.env.JWT_SECRET;
     const token = jwt.sign({ email: email }, secret, { expiresIn: '10m' })
 

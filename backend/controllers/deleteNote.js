@@ -5,12 +5,12 @@ module.exports = async (req, res) => {
     try {
 
         await User.updateOne(
-            { username: req.username },
+            { email: req.email },
             { $unset: {[`questions.${req.body.questionNumber - 1}`]: 1} }
         )
 
         await User.updateOne(
-            { username: req.body.username },
+            { email: req.email },
             { $pull: { questions: null } }
         )
 

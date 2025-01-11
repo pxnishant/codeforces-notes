@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-module.exports = (req, res) => {
+module.exports = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(" ")[1];
 
@@ -8,7 +8,7 @@ module.exports = (req, res) => {
 
     jwt.verify(token, process.env.JWT_SECRET, (err, message) => {
         if(err) return res.status(403).send("Invalid or Expired Token!");
-        req.username = message.user;
+        req.email = message.email;
         next();
     });
 }
