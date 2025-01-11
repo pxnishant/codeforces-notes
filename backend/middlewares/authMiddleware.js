@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
 
     jwt.verify(token, process.env.JWT_SECRET, (err, message) => {
         if(err) return res.status(403).send("Invalid or Expired Token!");
-        req.username = message.email;
+        req.email = message.email;
         next();
     });
 }
