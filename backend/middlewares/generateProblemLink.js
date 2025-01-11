@@ -1,4 +1,4 @@
-modueles.export = (req, res, next) => {
+module.exports = (req, res, next) => {
     if(req.type == 'PUT') next();
     if(req.params){
         const groupId = max(req.params.groupId, -1);
