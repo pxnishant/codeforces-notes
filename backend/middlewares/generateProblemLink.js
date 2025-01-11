@@ -1,7 +1,6 @@
 module.exports = (req, res, next) => {
     if(req.method == 'PUT') next();
     let groupId, contestId, problemId, type;
-
     if(req.method == 'GET'){
         groupId = Math.max(req.params.groupId, -1);
         contestId = req.params.contestId;
