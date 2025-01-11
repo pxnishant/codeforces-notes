@@ -1,42 +1,3 @@
-function isLoggedIn() {
-    chrome.runtime.sendMessage(
-        {
-            type: "isLoggedIn"
-        }, (resp) => {
-        if(resp){
-            overlay.style.display = 'block';
-            popupContainer.style.display = 'block';
-        } else {
-            alert("Kindly login using extension icon.")
-        }
-    })
-}
-
-let navBar = document.querySelector('ul.second-level-menu-list');
-
-if(navBar){
-    let addNote = document.createElement('li');
-    let addNoteLink = document.createElement('a');
-
-    addNoteLink.innerText = 'ADD NOTE';
-    addNoteLink.style.color = '#cf2130';
-    addNoteLink.style.cursor = 'pointer';
-
-    addNoteLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        isLoggedIn();
-    });
-
-    addNote.appendChild(addNoteLink);
-    navBar.appendChild(addNote);
-} else {
-    console.error("second-level-menu-list not found.");
-}
-
-
-
-
-    
 let overlay = document.createElement('div');
 overlay.style.position = "fixed";
 overlay.style.top = 0;
@@ -141,3 +102,35 @@ let body = document.querySelector("div#body");
 body.appendChild(overlay);
 body.appendChild(popupContainer);
 
+let navBar = document.querySelector('ul.second-level-menu-list');
+
+if(navBar){
+    let addNote = document.createElement('li');
+    let addNoteLink = document.createElement('a');
+
+    addNoteLink.innerText = 'ADD NOTE';
+    addNoteLink.style.color = '#cf2130';
+    addNoteLink.style.cursor = 'pointer';
+
+    addNote.appendChild(addNoteLink);
+    navBar.appendChild(addNote);
+
+    addNoteLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log("In Logged in fucntion!")
+        chrome.runtime.sendMessage(
+            {
+                type: "isLoggedIn"
+            },  (resp) => {
+                if(resp){
+                    overlay.style.display = 'block';
+                    popupContainer.style.display = 'block';
+                } else {
+                    alert("Kindly login using extension icon.")
+                }
+        }); 
+    });
+    
+} else {
+    console.error("second-level-menu-list not found.");
+}

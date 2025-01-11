@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
             {upsert: true}
         )
         
-        console.log(`note for user ${req.user} is updated.`);
+        console.log(`note for user ${req.username} is updated.`);
         res.send("Note Added Successfully!");
     } catch(e) {
         console.error(`Note not added for user ${req.username}`);

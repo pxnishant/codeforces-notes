@@ -22,14 +22,10 @@ const loginButton = document.getElementById("login");
 const logoutButton = document.getElementById("logout");
 
 loginButton.addEventListener('click', () => {
-    const magicLink = backendUrl + "api/auth/getMagicLink";
-    const email = document.getElementById("email").value
+    const email = document.getElementById("email").value;
+    const magicLink = backendUrl + `api/auth/getMagicLink/${email}`;
     fetch(magicLink, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email: email })
+        method: "GET",
     })
         .then((res) => {
             if(!res.ok){
