@@ -1,7 +1,7 @@
 module.exports = (req, res, next) => {
     let groupId, contestId, problemId, type;
     if(req.method == 'GET' || req.method == 'PUT'){
-        groupId = Math.max(req.params.groupId, -1);
+        groupId = req.params.groupId;
         contestId = req.params.contestId;
         problemId = req.params.problemId;
         type = req.params.type;
@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
     
     const baseURL = "https://codeforces.com/";
     let url = baseURL;
-    if(groupId >= 0){
+    if(groupId != -1){
         url += `group/${groupId}/contest/${contestId}/problem/${problemId}`;
     } else {
         if(type == 'gym') {

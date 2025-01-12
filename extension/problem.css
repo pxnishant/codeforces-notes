@@ -60,6 +60,6 @@
 }
 
 .add-note-link {
-    color: #cf2130;
+    color: #cf2130 !important;
     cursor: pointer;
 }
