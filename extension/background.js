@@ -10,13 +10,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResp) => {
     if (sender.tab) {
         if (message.type === "isLoggedIn") {
             chrome.cookies.get({ url: backendUrl, name: cookieName }, (cookie) => {
-                if (cookie) sendResp(cookie.value);
+                if (cookie){
+                    console.log(cookie.value);
+                    sendResp(cookie.value);
+                } 
                 else sendResp(false);
             });
             return true; // Indicate async response
         } else if (message.type === "getNote") {
             let getURL = `${backendUrl}api/getNote/${message.pType}/${message.contestId}/${message.problemId}/group/${message.groupId}`;
             console.log(getURL);
+            console.log(message.token);
             fetch(getURL, {
                 method: "GET",
                 headers: {

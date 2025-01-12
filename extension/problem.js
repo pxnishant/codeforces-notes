@@ -117,14 +117,24 @@ if (currentUrl.includes('/gym/')) {
     ids.pType = "gym";
 }
 
+function sendMessagePromise(message) {
+    return new Promise((resolve, reject) => {
+        chrome.runtime.sendMessage(message, (response) => {
+            if (chrome.runtime.lastError) {
+                reject(chrome.runtime.lastError);
+            } else {
+                resolve(response);
+            }
+        });
+    });
+}
+
 let currNote;
 let userToken;
 // Fetching and storing the userNote (if any).
 async function main() {
-    await chrome.runtime.sendMessage({type: "isLoggedIn"}, (resp) => {
-        userToken = resp;
-    })
-    console.log(userToken);
+    userToken = await sendMessagePromise({ type: "isLoggedIn" });
+    
     if(userToken == false){
         addNoteLink.innerText = "ADD NOTE";
         navBar.appendChild(addNote);
@@ -148,6 +158,7 @@ function setup() {
     console.log(currNote);
     if(currNote) {
         addNoteLink.innerText = "VIEW NOTE";
+        textArea.value = currNote;
         textArea.readOnly = true;
         saveButton.style.display = "none";
         editButton.style.display = "inline-block";
