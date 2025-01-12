@@ -6,8 +6,10 @@ module.exports = async (req, res) => {
     try {
 
         await User.updateOne(
-            { email: req.email },
-            { $set: { [`questions.${req.body.questionNumber - 1}.note`]: req.body.note } }
+            { email: req.email,
+            "questions.link": req.problemLink },
+            { $set: { "questions.$.note": req.body.note } },
+            { new: true }
         )
 
         res.send('Note updated.')

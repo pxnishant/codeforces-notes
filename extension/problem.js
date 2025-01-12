@@ -1,140 +1,3 @@
-let overlay = document.createElement('div');
-overlay.style.position = "fixed";
-overlay.style.top = 0;
-overlay.style.left = 0;
-overlay.style.margin = 0;
-overlay.style.width = "100vw";
-overlay.style.height = "100vh";
-overlay.style.zIndex = 999;
-overlay.style.display = "none";
-overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-
-let popupContainer = document.createElement("div");
-popupContainer.style.position = 'fixed';
-popupContainer.style.height = '50vh';
-popupContainer.style.width = '50vw';
-popupContainer.style.top = '50%';
-popupContainer.style.left = '50%';
-popupContainer.style.transform = 'translate(-50%, -50%)';
-popupContainer.style.backgroundColor = 'white';
-popupContainer.style.padding = '20px';
-popupContainer.style.zIndex = 1001;
-popupContainer.style.display = 'none';
-
-let textArea = document.createElement("textarea");
-textArea.style.width = '100%';
-textArea.style.height = 'calc(100% - 40px)';
-textArea.style.resize = 'none';
-textArea.placeholder = "Add your notes here...";
-textArea.padding = "5px";
-popupContainer.appendChild(textArea);
-
-let saveButton = document.createElement("button");
-saveButton.innerText = "Save";
-saveButton.style.marginTop = "10px";
-saveButton.style.padding = "5px 10px";
-saveButton.style.backgroundColor = "#007c10";
-saveButton.style.color = "white";
-saveButton.style.border = "none";
-saveButton.style.cursor = "pointer";
-
-saveButton.addEventListener("click", () => {
-    console.log(username);
-    // let questionName = ;
-    // let questionURL = ;
-    // let questionRating = ;
-    let note = textArea.value;
-
-    console.log(note);
-    overlay.style.display = 'none';
-    popupContainer.style.display = 'none';
-
-    // let data = {
-    //     username: username,
-    //     questionName: questionName,
-    //     questionURL: questionURL,
-    //     questionRating: questionRating,
-    //     note: note
-    // };
-
-    // let apiURL = ;
-
-    // fetch(apiUrl, {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(data),
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //     console.log("Notes saved:", data);
-    //     alert("Notes saved successfully!");
-    //     overlay.style.display = "none";
-    //     popupContainer.style.display = "none";
-    // })
-    // .catch(error => {
-    //     console.error("Error saving notes:", error);
-    //     alert("Failed to save notes.");
-    // });
-
-})
-
-popupContainer.appendChild(saveButton);
-
-let closeButton = document.createElement("button");
-closeButton.innerText = "Close";
-closeButton.style.marginLeft = "10px";
-closeButton.style.padding = "5px 10px";
-closeButton.style.backgroundColor = "#cf2130";
-closeButton.style.color = "white";
-closeButton.style.border = "none";
-closeButton.style.cursor = "pointer";
-
-closeButton.addEventListener("click", () => {
-    overlay.style.display = "none";
-    popupContainer.style.display = "none";
-});
-
-popupContainer.appendChild(closeButton);
-
-let body = document.querySelector("div#body");
-body.appendChild(overlay);
-body.appendChild(popupContainer);
-
-let navBar = document.querySelector('ul.second-level-menu-list');
-
-if(navBar){
-    let addNote = document.createElement('li');
-    let addNoteLink = document.createElement('a');
-
-    addNoteLink.innerText = 'ADD NOTE';
-    addNoteLink.style.color = '#cf2130';
-    addNoteLink.style.cursor = 'pointer';
-
-    addNote.appendChild(addNoteLink);
-    navBar.appendChild(addNote);
-
-    addNoteLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        console.log("In Logged in fucntion!")
-        chrome.runtime.sendMessage(
-            {
-                type: "isLoggedIn"
-            },  (resp) => {
-                if(resp){
-                    overlay.style.display = 'block';
-                    popupContainer.style.display = 'block';
-                } else {
-                    alert("Kindly login using extension icon.")
-                }
-        }); 
-    });
-    
-} else {
-    console.error("second-level-menu-list not found.");
-}
-
 function extractIdsFromUrl(url) {
     let regexProblemset = /https:\/\/codeforces\.com\/problemset\/problem\/([^\/]+)\/([^\/]+)/;
     let regexGym = /https:\/\/codeforces\.com\/gym\/([^\/]+)\/problem\/([^\/]+)/;
@@ -159,18 +22,161 @@ function extractIdsFromUrl(url) {
     }
 }
 
-function fetchNote(url) {
-    let ids = extractIdsFromUrl(url);
-    ids.pType = "normal";
-    if(url.includes('/gym/')) {
-        ids.pType = "gym";
+// ------------------- Starting setting up note frontend -------------------
+let overlay = document.createElement('div');
+overlay.classList.add('overlay');
+
+let popupContainer = document.createElement("div");
+popupContainer.classList.add('popup-container')
+
+let textArea = document.createElement("textarea");
+popupContainer.appendChild(textArea);
+
+let saveButton = document.createElement("button");
+saveButton.innerText = "Save";
+saveButton.classList.add('save-button');
+
+saveButton.addEventListener("click", async () => {
+    let note = textArea.value;
+    let message = {...ids, type:"addNote", qName: qName, token: userToken, note: note};
+    if(currNote) message.type = "editNote";
+    if(note.trim() != "" && note != currNote) {
+        try {
+            // Wrap chrome.runtime.sendMessage in a promise
+            const res = await new Promise((resolve, reject) => {
+                chrome.runtime.sendMessage(message, (response) => {
+                    if (chrome.runtime.lastError) {
+                        reject(chrome.runtime.lastError.message);
+                    } else {
+                        resolve(response);
+                    }
+                });
+            });
+            currNote = note;
+            console.log(currNote);
+            alert(res);
+        } catch (error) {
+            console.error("Error sending message:", error);
+        }
+    } else {
+        alert("No changes in the note!");
     }
-    ids.type = "getNote";
-    chrome.runtime.sendMessage(ids, (res) => {
-        return res;
+    overlay.style.display = "none";
+    popupContainer.style.display = "none";
+    setup();
+});
+
+let editButton = document.createElement('button');
+editButton.innerText = 'Edit note';
+editButton.classList.add('edit-button');
+
+editButton.addEventListener('click', () => {
+    textArea.readOnly = false;
+    saveButton.style.display = "inline-block";
+    editButton.style.display = "none";
+})
+
+let closeButton = document.createElement("button");
+closeButton.innerText = "Close";
+closeButton.classList.add('close-button');
+
+closeButton.addEventListener("click", () => {
+    overlay.style.display = "none";
+    popupContainer.style.display = "none";
+    setup();
+});
+
+popupContainer.appendChild(saveButton);
+popupContainer.appendChild(editButton);
+popupContainer.appendChild(closeButton);
+
+let body = document.querySelector("div#body");
+body.appendChild(overlay);
+body.appendChild(popupContainer);
+
+// ------------------- Ending setting up note frontend -------------------
+
+let navBar = document.querySelector('ul.second-level-menu-list');
+let addNote = document.createElement('li');
+let addNoteLink = document.createElement('a');
+addNoteLink.classList.add('add-note-link');
+
+addNote.appendChild(addNoteLink);
+
+
+
+// ------------------- Starting fetching and storing note and Ids ------------------
+let currentUrl = window.location.href;
+const qName = document.querySelector('.problem-statement .header .title').innerText;
+console.log(qName);
+
+//JSON object containing groupId, ContestId and problemId
+let ids = extractIdsFromUrl(currentUrl); 
+ids.pType = "normal";
+if (currentUrl.includes('/gym/')) {
+    ids.pType = "gym";
+}
+
+let currNote;
+let userToken;
+// Fetching and storing the userNote (if any).
+async function main() {
+    await chrome.runtime.sendMessage({type: "isLoggedIn"}, (resp) => {
+        userToken = resp;
+    })
+    if(userToken == false){
+        addNoteLink.innerText = "ADD NOTE";
+        navBar.appendChild(addNote);
+        addNoteLink.addEventListener("click", () => {
+            alert("Kindly login using extension icon.")
+        }); return;
+    }
+    currNote = await fetchNote(ids);
+    console.log(`NOTE: ${currNote}`);
+    setup();
+    navBar.appendChild(addNote);
+    addNoteLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        overlay.style.display = "block";
+        popupContainer.style.display = "block";
+    })
+}
+
+function setup() {
+    console.log("In the setup!");
+    console.log(currNote);
+    if(currNote) {
+        addNoteLink.innerText = "VIEW NOTE";
+        textArea.readOnly = true;
+        saveButton.style.display = "none";
+        editButton.style.display = "inline-block";
+
+    } else {
+        addNoteLink.innerText = 'ADD NOTE';
+        textArea.readOnly = false;
+        editButton.style.display = "none";
+        saveButton.style.display = "inline-block";
+    }
+}
+// ----------------- Ending fetching and storing note and Ids ---------------------
+
+
+
+async function fetchNote(ids) {
+    return new Promise((resolve, reject) => {
+        let message = { ...ids, type: "getNote", token: userToken};
+        chrome.runtime.sendMessage(message, (res) => {
+            if (chrome.runtime.lastError) {
+                reject(chrome.runtime.lastError.message); 
+            } else {
+                resolve(res); 
+            }
+        });
     });
 }
 
-let currentUrl = window.location.href;
 
-const currNote = fetchNote(currentUrl);
+main();
+
+
+

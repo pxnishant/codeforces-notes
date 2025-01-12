@@ -15,7 +15,7 @@ router.get('/getAllNotes', authMiddleware, generateProblemLink, getAllNotes)
 router.get('/getNotes', authMiddleware, generateProblemLink, getNotes)
 router.get('/getNote/:type/:contestId/:problemId/group/:groupId', authMiddleware, generateProblemLink, getNote);
 router.post('/addNote', authMiddleware, generateProblemLink, addNote)
-router.put('/editNote', authMiddleware, generateProblemLink, editNote)
+router.put('/editNote/:type/:contestId/:problemId/group/:groupId', authMiddleware, generateProblemLink, editNote)
 router.delete('/deleteNote', authMiddleware, generateProblemLink, deleteNote)
 
 module.exports = router
