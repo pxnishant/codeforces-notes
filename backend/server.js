@@ -13,7 +13,7 @@ mongoose.connect(process.env.MONGODB_CONN_URL).then(() => {
 })
 
 //middlewares
-app.use(express.json())
+app.use(express.json());
 app.use(cookieParser());
 
 

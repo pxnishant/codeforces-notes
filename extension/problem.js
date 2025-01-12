@@ -124,6 +124,7 @@ async function main() {
     await chrome.runtime.sendMessage({type: "isLoggedIn"}, (resp) => {
         userToken = resp;
     })
+    console.log(userToken);
     if(userToken == false){
         addNoteLink.innerText = "ADD NOTE";
         navBar.appendChild(addNote);
@@ -165,6 +166,7 @@ function setup() {
 async function fetchNote(ids) {
     return new Promise((resolve, reject) => {
         let message = { ...ids, type: "getNote", token: userToken};
+        console.log(message);
         chrome.runtime.sendMessage(message, (res) => {
             if (chrome.runtime.lastError) {
                 reject(chrome.runtime.lastError.message); 
