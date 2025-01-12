@@ -117,13 +117,24 @@ if (currentUrl.includes('/gym/')) {
     ids.pType = "gym";
 }
 
+function sendMessagePromise(message) {
+    return new Promise((resolve, reject) => {
+        chrome.runtime.sendMessage(message, (response) => {
+            if (chrome.runtime.lastError) {
+                reject(chrome.runtime.lastError);
+            } else {
+                resolve(response);
+            }
+        });
+    });
+}
+
 let currNote;
 let userToken;
 // Fetching and storing the userNote (if any).
 async function main() {
-    await chrome.runtime.sendMessage({type: "isLoggedIn"}, (resp) => {
-        userToken = resp;
-    })
+    userToken = await sendMessagePromise({ type: "isLoggedIn" });
+    
     if(userToken == false){
         addNoteLink.innerText = "ADD NOTE";
         navBar.appendChild(addNote);
@@ -147,6 +158,7 @@ function setup() {
     console.log(currNote);
     if(currNote) {
         addNoteLink.innerText = "VIEW NOTE";
+        textArea.value = currNote;
         textArea.readOnly = true;
         saveButton.style.display = "none";
         editButton.style.display = "inline-block";
@@ -165,6 +177,7 @@ function setup() {
 async function fetchNote(ids) {
     return new Promise((resolve, reject) => {
         let message = { ...ids, type: "getNote", token: userToken};
+        console.log(message);
         chrome.runtime.sendMessage(message, (res) => {
             if (chrome.runtime.lastError) {
                 reject(chrome.runtime.lastError.message); 

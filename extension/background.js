@@ -10,13 +10,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResp) => {
     if (sender.tab) {
         if (message.type === "isLoggedIn") {
             chrome.cookies.get({ url: backendUrl, name: cookieName }, (cookie) => {
-                if (cookie) sendResp(cookie.value);
+                if (cookie){
+                    console.log(cookie.value);
+                    sendResp(cookie.value);
+                } 
                 else sendResp(false);
             });
             return true; // Indicate async response
         } else if (message.type === "getNote") {
             let getURL = `${backendUrl}api/getNote/${message.pType}/${message.contestId}/${message.problemId}/group/${message.groupId}`;
             console.log(getURL);
+            console.log(message.token);
             fetch(getURL, {
                 method: "GET",
                 headers: {
@@ -36,7 +40,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResp) => {
                     console.error("Error fetching note:", e.message);
                     sendResp(""); // Send error details
                 });
-            return true; // Indicate async response
+            return true;
         } else if(message.type === 'editNote'){
             let getURL = `${backendUrl}api/editNote/${message.pType}/${message.contestId}/${message.problemId}/group/${message.groupId}`;
             console.log(getURL);
@@ -67,7 +71,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResp) => {
             fetch(getURL, {
                 method: "POST",
                 headers: {
-                    'Authorization': `Bearer ${message.token}`
+                    'Authorization': `Bearer ${message.token}`,
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     note: message.note,
@@ -75,7 +80,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResp) => {
                     contestId: message.contestId,
                     problemId: message.problemId,
                     type: message.pType,
-                    name: message.qName
+                    qName: message.qName
                 })
             })
                 .then((res) => {
