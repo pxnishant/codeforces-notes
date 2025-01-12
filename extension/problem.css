@@ -1,0 +1,65 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-container {
+    position: fixed;
+    height: 50vh;
+    width: 50vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    z-index: 1001;
+    display: none;
+}
+
+.popup-container textarea {
+    width: 100%;
+    height: calc(100% - 40px);
+    resize: none;
+    padding: 5px;
+}
+
+.save-button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #007c10;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: none;
+}
+
+.edit-button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #007c10;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: none;
+}
+
+.close-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #cf2130;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.add-note-link {
+    color: #cf2130;
+    cursor: pointer;
+}

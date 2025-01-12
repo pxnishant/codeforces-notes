@@ -40,9 +40,10 @@ loginButton.addEventListener('click', () => {
                 statusDiv.textContent = `Check ${email} email for login link.`
                 loginScreen.style.display = "none";
             }
+            reloadCurrentTab();
         })
         .catch((err) => {
-            statusDiv.textContent = `Error : ${err}`;
+            statusDiv.textContent = err;
             console.log(err);
         });
 });
@@ -54,6 +55,15 @@ logoutButton.addEventListener('click', () => {
     logoutScreen.style.display = "none";
     statusDiv.textContent = "Enter you email to login!";
     loginScreen.style.display = "block";
+    reloadCurrentTab();
 })
+
+function reloadCurrentTab() {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs[0]) {
+            chrome.tabs.reload(tabs[0].id);
+        }
+    });
+}
 
 document.addEventListener('DOMContentLoaded', checkCookie);
