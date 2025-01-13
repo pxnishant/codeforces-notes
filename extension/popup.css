@@ -1,73 +1,84 @@
 * {
     margin: 0;
     padding: 0;
-    border: none;
+    box-sizing: border-box;
 }
-
 
 .body {
     width: 350px; 
-    height: 150px; 
+    min-height: 200px;
     display: flex; 
     flex-direction: column; 
-    align-content: center; 
+    align-items: center; 
     justify-content: center;
-    padding: 10px; 
-    gap: 20px; 
+    padding: 25px 20px; 
+    gap: 15px; 
+    background-color: #fff;
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; 
     color: #313131;
-    font-family: 'Gill Sans', 'Gill Sans MT', "Calibri", 'Trebuchet MS', sans-serif; 
 }
 
 .status {
     font-size: 1.7em; 
     text-align: center;
+    margin-bottom: 10px;
+}
+
+.heading {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #313131;
 }
 
 input {
-    width: 80%;
+    width: 95%;
     border: 2px solid #616161;
-    color: #616161;
-    padding: 5px;
-    font-size: 1.2em;
-}
-
-input:active {
-    border: 2px inset #313131;
-}
-
-button{
-    font-size: 1.2em;
-    padding: 10px;
-    width: 25%;
     border-radius: 5px;
-    margin: 10px auto 0px auto;
+    color: #313131;
+    padding: 10px;
+    font-size: 1.1em;
+    outline: none;
+    transition: border 0.3s ease;
+}
+
+input:focus {
+    border: 2px solid #313131;
+}
+
+button {
+    font-size: 1.2em;
+    padding: 7px 20px;
+    border-radius: 5px;
     background-color: #313131;
     color: white;
     cursor: pointer;
-    box-shadow: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-top: 10px;
 }
 
 button:hover {
     box-shadow: 
-    0 1px 1px hsl(0deg 0% 0% / 0.075),
-    0 2px 2px hsl(0deg 0% 0% / 0.075),
-    0 4px 4px hsl(0deg 0% 0% / 0.075),
-    0 6px 6px hsl(0deg 0% 0% /0.075);
-    background-color: #616161;
+        0 1px 1px hsl(0deg 0% 0% / 0.075),
+        0 2px 2px hsl(0deg 0% 0% / 0.075),
+        0 4px 4px hsl(0deg 0% 0% / 0.075),
+        0 6px 6px hsl(0deg 0% 0% / 0.075);
     transform: scale(1.05);
-
+    background-color: #616161;
 }
 
 button:active {
     box-shadow: none;
-    transform: scale(1);
     transform: translateY(2px);
 }
 
 .loginScreen {
+    display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    width: 100%;
+    text-align: center;
 }
 
 .logoutScreen {
@@ -88,8 +99,8 @@ button:active {
 }
 
 .spinner {
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     border: 5px solid #f3f3f3;
     border-top: 5px solid #313131;
     border-radius: 50%;
