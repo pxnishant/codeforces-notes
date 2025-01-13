@@ -8,10 +8,11 @@ function checkCookie() {
     chrome.cookies.get({url: backendUrl, name: cookieName}, (cookie) => {
         if(cookie){
             statusDiv.textContent = "You're logged in!";
+            statusDiv.style.fontSize = '1rem'
             loginScreen.style.display = "none";
             logoutScreen.style.display = "flex";
         } else {
-            statusDiv.textContent = "Enter your email to login!";
+            statusDiv.textContent = "Enter your email";
             loginScreen.style.display = "flex";
             logoutScreen.style.display = "none";
         }
@@ -42,7 +43,8 @@ loginButton.addEventListener('click', () => {
                 if(data == 'error'){
                     statusDiv.textContent = "Try after some time.";
                 } else {
-                    statusDiv.textContent = `Check ${email} email for login link.`
+                    statusDiv.innerHTML = `Check your email.<br><br><strong>Please use the same browser to click on the link.</strong>`
+                    statusDiv.style.fontSize = '1rem'
                     loginScreen.style.display = "none";
                 }
                 reloadCurrentTab();
