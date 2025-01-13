@@ -47,7 +47,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResp) => {
             fetch(getURL, {
                 method: "PUT",
                 headers: {
-                    'Authorization': `Bearer ${message.token}`
+                    'Authorization': `Bearer ${message.token}`,
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     note: message.note,
