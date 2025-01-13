@@ -36,14 +36,21 @@ module.exports = async (req, res) => {
 
             const magicLink = `https://${backendURL}/api/auth/verify?token=${token}`
 
-            emailtext = `<strong>Click on the link to authenticate yourself: </strong><br>
-            <a href = "${magicLink}">${magicLink}</a>
-            <br>`
+            emailtext = `
+                        <div style="max-width: 600px; margin: 20px auto; background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                        <div style="padding: 20px; color: #333333; line-height: 1.6; font-size: 16px;">
+                        <p>Hi there,</p>
+                        <p>Please click <a href = "${magicLink}">here</a> to authenticate yourself.
+                        <p>This link will expire in 15 minutes. As long as you're on the same browser, you will automatically be logged in when you click.</p>
+                        <p>Thank you,<br>Codeforces Notes</p>
+                        </div>
+                        </div>
+                        `
 
             const resend = new Resend(process.env.RESENT_API_KEY);
 
             const { data, error } = await resend.emails.send({
-                from: "CodeDaily <nishant@codedaily.tech>",
+                from: "Codeforces Notes <nishant@codedaily.tech>",
                 to: email,
                 subject: "Login link for Codeforces Notes",
                 html: emailtext,
