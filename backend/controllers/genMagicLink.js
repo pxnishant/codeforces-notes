@@ -3,7 +3,7 @@ const Auth = require('../database/authSchema')
 const mongoose = require('mongoose')
 const { Resend } = require('resend')
 require('dotenv').config()
-const backendURL = process.env.STATUS == 'production' ? process.env.VERCEL_URL : process.env.HOST
+const backendURL = process.env.STATUS == 'production' ? process.env.VERCEL_PROJECT_PRODUCTION_URL : process.env.HOST
 
 module.exports = async (req, res) => {
 
@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
 
         try {
 
-            const magicLink = `${backendURL}/api/auth/verify?token=${token}`
+            const magicLink = `https://${backendURL}/api/auth/verify?token=${token}`
 
             emailtext = `<strong>Click on the link to authenticate yourself: </strong><br>
             <a href = "${magicLink}">${magicLink}</a>
