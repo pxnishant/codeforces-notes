@@ -42,7 +42,7 @@ loginButton.addEventListener('click', () => {
                 if(data == 'error'){
                     statusDiv.textContent = "Try after some time.";
                 } else {
-                    statusDiv.textContent = `Check ${email} email for login link.`
+                    statusDiv.innerHTML = `Check email for login link. <br /> <strong>Kindly use the same browser.</strong>`
                     loginScreen.style.display = "none";
                 }
                 reloadCurrentTab();
