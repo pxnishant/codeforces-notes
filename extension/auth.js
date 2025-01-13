@@ -28,8 +28,9 @@ function checkCookie() {
             updateStatus("You're logged in!");
             showScreen(logoutScreen);
         } else {
-            updateStatus("Enter your email to login!");
-            showScreen(loginScreen);
+            statusDiv.textContent = "Enter your email to login!";
+            loginScreen.style.display = "flex";
+            logoutScreen.style.display = "none";
         }
     });
 }
