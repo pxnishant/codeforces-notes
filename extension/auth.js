@@ -4,73 +4,87 @@ const logoutScreen = document.getElementsByClassName("logoutScreen")[0];
 const backendUrl = "https://codeforces-notes.vercel.app/";
 const cookieName = "auth";
 
+function showScreen(screen) {
+    // Helper function to handle screen visibility
+    loginScreen.classList.remove('active');
+    logoutScreen.classList.remove('active');
+    if (screen) {
+        screen.classList.add('active');
+    }
+}
+
+function updateStatus(message, isHTML = false) {
+    // Helper function to update status with proper formatting
+    if (isHTML) {
+        statusDiv.innerHTML = message;
+    } else {
+        statusDiv.textContent = message;
+    }
+}
+
 function checkCookie() {
     chrome.cookies.get({url: backendUrl, name: cookieName}, (cookie) => {
-        if(cookie){
-            statusDiv.textContent = "You're logged in!";
-            loginScreen.style.display = "none";
-            logoutScreen.style.display = "flex";
+        if(cookie) {
+            updateStatus("You're logged in!");
+            showScreen(logoutScreen);
         } else {
-            statusDiv.textContent = "Enter your email to login!";
-            loginScreen.style.display = "flex";
-            logoutScreen.style.display = "none";
+            updateStatus("Enter your email to login!");
+            showScreen(loginScreen);
         }
     });
 }
 
-const loginButton = document.getElementById("login");
-const logoutButton = document.getElementById("logout");
-
-loginButton.addEventListener('click', () => {
-    const email = document.getElementById("email").value;
+function handleLogin() {
+    const email = document.getElementById("email").value.trim();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const overlay = document.getElementById("loadingOverlay");
 
-    if(emailRegex.test(email)){
+    if(emailRegex.test(email)) {
         overlay.style.display = "flex";
         const magicLink = backendUrl + `api/auth/getMagicLink/${email}`;
+        
         fetch(magicLink, {
             method: "GET",
         })
             .then((res) => {
-                if(!res.ok){
-                    console.log(res);
+                if(!res.ok) {
                     throw new Error("Try again after some time!");
                 }
             })
             .then((data) => {
-                if(data == 'error'){
-                    statusDiv.textContent = "Try after some time.";
+                if(data === 'error') {
+                    updateStatus("Try after some time.");
                 } else {
-                    statusDiv.innerHTML = `Check email for login link. <br /> <strong>Kindly use the same browser.</strong>`
-                    loginScreen.style.display = "none";
+                    updateStatus(`Check email for login link. <br /> <strong>Kindly use the same browser.</strong>`, true);
+                    showScreen(null);
+                    document.querySelector(".status").style.fontSize = "1.1rem";
+                    document.querySelector(".status").style.marginBottom = "none";             
+                     
                 }
                 reloadCurrentTab();
             })
             .catch((err) => {
-                statusDiv.textContent = err;
-                console.log(err);
+                updateStatus(err.message);
+                console.error('Login error:', err);
             })
             .finally(() => {
                 overlay.style.display = "none";
-            })
+            });
     } else {
-        statusDiv.textContent = "Kindly write the email address properly!"
+        updateStatus("Please enter a valid email address!");
     }
-    
-});
+}
 
-logoutButton.addEventListener('click', () => {
-    if(window.confirm("Do you really want to logout?")){
+function handleLogout() {
+    if(window.confirm("Do you really want to logout?")) {
         chrome.cookies.remove({url: backendUrl, name: cookieName}, (cookie) => {
-            console.log(`removed cookie, ${cookie}`);
+            console.log(`Cookie removed:`, cookie);
         });
-        logoutScreen.style.display = "none";
-        statusDiv.textContent = "Enter you email to login!";
-        loginScreen.style.display = "flex";
+        showScreen(loginScreen);
+        updateStatus("Enter your email to login!");
         reloadCurrentTab();
     }    
-})
+}
 
 function reloadCurrentTab() {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -80,4 +94,7 @@ function reloadCurrentTab() {
     });
 }
 
+// Event Listeners
 document.addEventListener('DOMContentLoaded', checkCookie);
+document.getElementById("login").addEventListener('click', handleLogin);
+document.getElementById("logout").addEventListener('click', handleLogout);

@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Authentication System</title>
-
-  <link rel="stylesheet" href="popup.css">
-  
+    <meta charset="UTF-8">
+    <title>Authentication System</title>
+    <link rel="stylesheet" href="popup.css">
 </head>
 <body>
     <div id="loadingOverlay">
-      <div class="spinner"></div>
-  </div>
-  <div class="body">
-    <div class="status" ></div>
-    <div class="loginScreen" style = "display: none;">
-        <input type="text", id="email" placeholder="Enter your email here...."/>
-        <button id="login">Login</button>
-        
+        <div class="spinner"></div>
     </div>
-    <div class="logoutScreen" style = "display: none; justify-content: center;">
-      <button id="logout" style="padding: 10px; border-radius: 10 px;">Logout</button>
+    <div class="container">
+        <div class="card">
+            <div class="status"></div>
+            <div class="loginScreen">
+                <div class="input-group">
+                    <input type="email" id="email" placeholder="Enter your email here..."/>
+                    <button id="login">Get Login Link</button>
+                </div>
+                <p class="hint">Please use the same browser to open the login link</p>
+            </div>
+            <div class="logoutScreen">
+                <button id="logout">Logout</button>
+            </div>
+        </div>
     </div>
-  </div>
-
-  <script src="auth.js"></script>
+    <script src="auth.js"></script>
 </body>
 </html>
