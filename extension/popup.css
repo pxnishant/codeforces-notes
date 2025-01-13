@@ -13,6 +13,7 @@
     justify-content: center;
     padding: 20px; 
     gap: 30px; 
+    color: #313131;
     font-family: 'Gill Sans', 'Gill Sans MT', "Calibri", 'Trebuchet MS', sans-serif; 
 }
 
@@ -35,7 +36,8 @@ label {
 }
 input {
     width: calc(100% - 16px);
-    border: 3px inset black;
+    border: 3px inset #313131;
+    color: #616161;
     padding: 5px;
     font-size: 1rem;
 }
@@ -46,17 +48,26 @@ button{
     width: 40%;
     border-radius: 5px;
     margin: 20px auto 0px auto;
-    background-color: black;
+    background-color: #313131;
     color: white;
     cursor: pointer;
+    box-shadow: none;
 }
 
 button:hover {
+    box-shadow: 
+    0 1px 1px hsl(0deg 0% 0% / 0.075),
+    0 2px 2px hsl(0deg 0% 0% / 0.075),
+    0 4px 4px hsl(0deg 0% 0% / 0.075);
+    background-color: #616161;
     transform: scale(1.02);
+
 }
 
 button:active {
+    box-shadow: none;
     transform: scale(1);
+    transform: translateY(2px);
 }
 
 .loginScreen {
@@ -66,4 +77,35 @@ button:active {
 
 .logoutScreen {
     margin-top: -35px;
+}
+
+#loadingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

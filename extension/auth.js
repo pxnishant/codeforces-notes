@@ -24,7 +24,10 @@ const logoutButton = document.getElementById("logout");
 loginButton.addEventListener('click', () => {
     const email = document.getElementById("email").value;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const overlay = document.getElementById("loadingOverlay");
+
     if(emailRegex.test(email)){
+        overlay.style.display = "flex";
         const magicLink = backendUrl + `api/auth/getMagicLink/${email}`;
         fetch(magicLink, {
             method: "GET",
@@ -47,7 +50,10 @@ loginButton.addEventListener('click', () => {
             .catch((err) => {
                 statusDiv.textContent = err;
                 console.log(err);
-            });
+            })
+            .finally(() => {
+                overlay.style.display = "none";
+            })
     } else {
         statusDiv.textContent = "Kindly write the email address properly!"
     }
