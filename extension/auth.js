@@ -29,8 +29,7 @@ function checkCookie() {
             showScreen(logoutScreen);
         } else {
             statusDiv.textContent = "Enter your email to login!";
-            loginScreen.style.display = "flex";
-            logoutScreen.style.display = "none";
+            show(loginScreen);
         }
     });
 }
